@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="30 seconds">
+    
+    <!-- file -->
+	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:\logs\log.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>C:\logs\log-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- console -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %5p [%c] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+		<connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+			<driverClass>oracle.jdbc.OracleDriver</driverClass>
+			<url>jdbc:oracle:thin:@localhost:1521:xe</url>
+			<user>MYWEB</user>
+			<password>myweb</password>
+		</connectionSource>
+	</appender>
+
+    <logger name="com.example.signUp" level="DEBUG">
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="com.example.signUp" level="INFO">
+        <appender-ref ref="console"/>
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+        <appender-ref ref="DB"/>
+    </root> 
+
+    <!-- DB -->
+    <!-- <springProperty name="driverClass" source="oracle.jdbc.driver.OracleDriver"/>
+    <springProperty name="url" source="jdbc:oracle:thin:@127.0.0.1:1521:xe"/>
+    <springProperty name="user" source="MYWEB"/>
+    <springProperty name="password" source="myweb"/>
+
+    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+            <dataSource class="org.apache.commons.dbcp.BasicDataSource">
+                <driverClass>${driverClass}</driverClass>
+                <url>${url}</url>
+                <user>${user}</user>
+                <password>${password}</password>
+            </dataSource>
+        </connectionSource>
+    </appender>
+
+    <appender-ref ref="DB"/> -->
+</configuration>
